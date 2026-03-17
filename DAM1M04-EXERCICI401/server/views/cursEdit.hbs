@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  {{> header}}
+  <link rel="stylesheet" href="formularis.css">
+  <title>Editar curs</title>
+</head>
+<body>
+  {{> menu}}
+
+  <main class="container">
+    <h1>Editar curs (ID: {{curs.id}})</h1>
+
+    <form method="POST" action="/update" class="form-grid">
+      <input type="hidden" name="table" value="cursos">
+      <input type="hidden" name="id" value="{{curs.id}}">
+
+      <label for="nom">Nom del curs</label>
+      <input type="text" id="nom" name="nom" value="{{curs.nom}}" required>
+
+      <label for="tematica">Temàtica</label>
+      <input type="text" id="tematica" name="tematica" value="{{curs.tematica}}" required>
+
+      <label for="mestre_id">Mestre</label>
+      <select id="mestre_id" name="mestre_id" required>
+        {{#each mestres}}
+          <option value="{{id}}" {{#if (eq id ../curs.mestre_id)}}selected{{/if}}>{{nom}}</option>
+        {{/each}}
+      </select>
+
+      <button type="submit">Desar canvis</button>
+    </form>
+
+    <hr>
+
+    <form method="POST" action="/delete" onsubmit="return true;">
+      <input type="hidden" name="table" value="cursos">
+      <input type="hidden" name="id" value="{{curs.id}}">
+      <button type="submit">🗑️ Esborrar curs</button>
+    </form>
+
+    <br>
+    <a href="/curs?id={{curs.id}}">Tornar a la fitxa</a>
+  </main>
+
+  {{> footer}}
+</body>
+</html>

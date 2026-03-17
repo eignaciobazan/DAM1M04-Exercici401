@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  {{> header}}
+  <link rel="stylesheet" href="formularis.css">
+  <title>Afegir curs</title>
+</head>
+<body>
+  {{> menu}}
+
+  <main class="container">
+    <h1>Afegir nou curs</h1>
+
+    <form method="POST" action="/create" class="form-grid">
+      <input type="hidden" name="table" value="cursos"/>
+
+      <label for="nom">Nom del curs</label>
+      <input type="text" id="nom" name="nom" required>
+
+      <label for="tematica">Temàtica</label>
+      <input type="text" id="tematica" name="tematica" required>
+
+      <button type="submit">Afegir curs</button>
+    </form>
+  </main>
+
+  {{> footer}}
+</body>
+</html>

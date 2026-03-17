@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  {{> header}}
+  <title>Cursos</title>
+</head>
+<body>
+  {{> menu}}
+
+  <main class="container">
+    <h1>Cursos</h1>
+
+    <p>Informació actualitzada de la base de dades</p>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Curs</th>
+          <th>Temàtica</th>
+          <th>Mestre</th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {{#each cursos}}
+          <tr>
+            <td>{{nom}}</td>
+            <td>{{tematica}}</td>
+            <td>{{mestre_nom}}</td>
+            <td><a href="/curs?id={{id}}">Veure detalls</a></td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </main>
+
+  <br/><br/>
+  <a href="/cursAdd" class="btn btn-primary">Afegir nou curs</a>
+
+  {{> footer}}
+</body>
+</html>

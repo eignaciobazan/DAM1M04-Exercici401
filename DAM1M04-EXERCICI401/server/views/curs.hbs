@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  {{> header}}
+  <link rel="stylesheet" href="inlineform.css">
+  <title>Curs {{curs.id}}</title>
+</head>
+<body>
+  {{> menu}}
+
+  <main class="container">
+    <h1>Curs {{curs.nom}} (ID: {{curs.id}})</h1>
+
+    <p>Informació actualitzada de la base de dades</p>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Curs</th>
+          <th>Temàtica</th>
+          <th>Mestre</th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td>{{curs.nom}}</td>
+          <td>{{curs.tematica}}</td>
+          <td>{{curs.mestre_nom}}</td>
+          <td>
+            <a href="/cursEdit?id={{curs.id}}">Editar</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
+
+  {{> footer}}
+</body>
+</html>
