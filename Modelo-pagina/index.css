@@ -1,0 +1,33 @@
+.encabezado{
+    background-color: lightblue;
+    padding:5rem;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    background-size: cover;
+}
+.encabezad1{
+    margin-top: -3rem;
+    letter-spacing: 0.5rem;
+    display: flex;
+    align-items: center;
+
+}
+
+.encabezad1 h1{
+   text-decoration: underline;
+   text-shadow: 2px 2px 9px #ece4e4;
+}
+.encabezad1:hover{
+    color: darkblue;
+    cursor: pointer;
+}
+nav a{
+    margin: 0 6rem;
+    text-decoration: underline;
+    font-size: 1.2rem;
+    color: black;
+    font-weight: bold;
+}
