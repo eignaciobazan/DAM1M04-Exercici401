@@ -1,0 +1,146 @@
+.encabezado{
+    background-color: lightblue;
+    padding:5rem;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    background-size: cover;
+}
+.encabezad1{
+    margin-top: -3rem;
+    letter-spacing: 0.5rem;
+    display: flex;
+    align-items: center;
+
+}
+
+.encabezad1 h1{
+   text-decoration: underline;
+   text-shadow: 2px 2px 9px #ece4e4;
+}
+.encabezad1:hover{
+    color: darkblue;
+    cursor: pointer;
+}
+/*Pestañas internas*/
+
+/* ------------------------------
+   CONTENEDOR PRINCIPAL DEL DASHBOARD
+-----------------------------------*/
+.dashboard {
+    width: 90%;
+    max-width: 1100px;
+    margin: 2rem auto;
+    font-family: Arial, sans-serif;
+}
+
+/* ------------------------------
+   PESTAÑAS
+-----------------------------------*/
+.tabs {
+    display: flex;
+    border-bottom: 2px solid #ccc;
+    margin-bottom: 1rem;
+}
+
+.tab {
+    padding: 1rem 2rem;
+    cursor: pointer;
+    background: #eee;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.tab.active {
+    background: #fff;
+    border-bottom: 3px solid dodgerblue;
+}
+
+/* ------------------------------
+   CONTENIDO DE LAS PESTAÑAS
+-----------------------------------*/
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* ------------------------------
+   BOTONES TOGGLE
+-----------------------------------*/
+button {
+    padding: 0.5rem 1rem;
+    margin-bottom: 1rem;
+    border: none;
+    background: dodgerblue;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1a73e8;
+}
+
+/* ------------------------------
+   TARJETAS KPI
+-----------------------------------*/
+.kpi-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+.card {
+    background: #f5f5f5;
+    padding: 1.5rem;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 1.2rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Modo compacto (si quieres usarlo con JS) */
+.compact .card {
+    padding: 0.8rem;
+    font-size: 1rem;
+}
+
+/* ------------------------------
+   TABLAS DE LISTADOS
+-----------------------------------*/
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+}
+
+table th, table td {
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+
+table th {
+    background: #eaeaea;
+}
+
+/* ------------------------------
+   COLORES DE STOCK (para el toggle)
+-----------------------------------*/
+.stock-ok {
+    background-color: #c8f7c5; /* verde */
+}
+
+.stock-low {
+    background-color: #f9e79f; /* naranja */
+}
+
+.stock-critical {
+    background-color: #f5b7b1; /* rojo */
+}
