@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+       
+        <link rel="stylesheet" href="index.css">
+       <meta charset="UTF-8">
+       <title>Principal</title>
+       <section class="encabezado">
+                <section class="encabezad1">
+                    <span class="material-symbols-outlined"></span>
+                    <h1 class="oswald-uniquifier">Botiga</h1>
+                     <span class="material-symbols-outlined"></span>
+                </section>
+                
+        </section>
+   </head>
+   <body>
+       <section class="dashboard">
+
+            <div class="tabs">
+                <button class="tab active" data-tab="kpi">KPI</button>
+                <button class="tab" data-tab="llistes">Llistats</button>
+            </div>
+
+            <div id="kpi" class="tab-content active">
+                <h2>KPI</h2>
+                <button id="toggleKPI">Compacte / Complet</button>
+
+                <div class="kpi-cards">
+                    <div class="card">Vendes d’avui: --</div>
+                    <div class="card">Vendes del mes: --</div>
+                    <div class="card">Comandes avui: --</div>
+                    <div class="card">Comandes mes: --</div>
+                    <div class="card">Stock baix: --</div>
+                </div>
+            </div>
+
+            <div id="llistes" class="tab-content">
+                <h2>Llistats</h2>
+                <button id="toggleColors">Colors ON/OFF</button>
+
+                <h3>Últimes 5 vendes</h3>
+                <table>...</table>
+
+                <h3>Top 5 productes més venuts</h3>
+                <table>...</table>
+            </div>
+
+        </section>
+    <script src="java.js"></script>
+   </body>
+</html> 
