@@ -14,7 +14,7 @@ const isProxmox = !!process.env.PM2_HOME;
 const db = new MySQL();
 if (!isProxmox) {
   db.init({
-    host: '127.0.0.1',
+    host: 'localhost',
     port: 3306,
     user: 'root',
     password: 'tuclave',
@@ -58,12 +58,12 @@ hbs.registerPartials(path.join(__dirname, 'views', 'partials'));
 app.get('/', async (req, res) => {
   try {
     // Obtenir les dades de la base de dades
-    const customersRows = await db.query('SELECT id, name');
+    const customersRows = await db.query('SELECT id, name from customers');
     
 
     // Transformar les dades a JSON (per les plantilles .hbs)
     // Cal informar de les columnes i els seus tipus
-    const cursosJson = db.table_to_json(cursosRows, { id: 'number', name: 'string'});
+    const customersJson = db.table_to_json(customersRows, { id: 'number', name: 'string'});
     
 
     // Llegir l'arxiu .json amb dades comunes per a totes les pàgines
