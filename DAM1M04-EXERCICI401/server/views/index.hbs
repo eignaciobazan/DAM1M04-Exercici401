@@ -18,7 +18,15 @@
                 <button id="toggleKPI">Compacte / Complet</button>
 
                 <div class="kpi-cards">
-                    <div class="card">Vendes d’avui: --</div>
+                    <div class="card">Vendes d’avui:
+                        <ul>
+                            {{#each sales}}
+                                <li>nombre:{{name}}-
+                                    fecha:{{sale_date}}</li>
+                            {{/each}}
+                            
+                        </ul>
+                    </div>
                     <div class="card">Vendes del mes: --</div>
                     <div class="card">Comandes avui: --</div>
                     <div class="card">Comandes mes: --</div>
