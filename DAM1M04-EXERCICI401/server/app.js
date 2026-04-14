@@ -58,22 +58,29 @@ hbs.registerPartials(path.join(__dirname, 'views', 'partials'));
 app.get('/', async (req, res) => {
   try {
     // Obtenir les dades de la base de dades
-    const customersRows = await db.query('SELECT id, name from customers');
+    const salesRows = await db.query(`SELECT p.name as name , s.sale_date as sale_date
+                                      FROM sales s
+                                      JOIN sale_items si ON s.id = si.sale_id
+                                      JOIN products p ON si.product_id = p.id
+                                      WHERE DATE(s.sale_date) = CURDATE();
+                      `);
+    //console.log(salesRows)
+    //console.log("abc")
     
 
     // Transformar les dades a JSON (per les plantilles .hbs)
     // Cal informar de les columnes i els seus tipus
-    const customersJson = db.table_to_json(customersRows, { id: 'number', name: 'string'});
+    const salesJson = db.table_to_json(salesRows, { name: 'string', sale_date: 'date'});
     
 
     // Llegir l'arxiu .json amb dades comunes per a totes les pàgines
     const commonData = JSON.parse(
       fs.readFileSync(path.join(__dirname, 'data', 'common.json'), 'utf8')
     );
-
+    
     // Construir l'objecte de dades per a la plantilla
     const data = {
-      customers: customersJson,
+      sales: salesJson,
       common: commonData
     };
 
