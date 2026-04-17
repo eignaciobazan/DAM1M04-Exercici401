@@ -27,8 +27,21 @@
                             
                         </ul>
                     </div>
-                    <div class="card">Vendes del mes: --</div>
-                    <div class="card">Comandes avui: --</div>
+                    <div class="card">Vendes del mes:
+                        <ul>
+                            {{#each sales1}}
+                                <li>nombre:{{name}}-
+                                    fecha:{{sale_date}}</li>
+                            {{/each}}
+                        </ul>
+                    </div>
+                    <div class="card">Comandes avui:
+                         <ul>
+                            {{#each sale_items}}
+                                <li>nombre:{{product_name}}-</li>
+                            {{/each}}
+                        </ul>
+                    </div>
                     <div class="card">Comandes mes: --</div>
                     <div class="card">Stock baix: --</div>
                 </div>

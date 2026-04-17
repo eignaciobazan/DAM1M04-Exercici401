@@ -62,8 +62,20 @@ app.get('/', async (req, res) => {
                                       FROM sales s
                                       JOIN sale_items si ON s.id = si.sale_id
                                       JOIN products p ON si.product_id = p.id
-                                      WHERE DATE(s.sale_date) = CURDATE();
-                      `);
+                                      WHERE DAY(s.sale_date) = 7;`);
+    const sales1Rows=await db.query(`SELECT p.name as name , s.sale_date as sale_date
+                                      FROM sales s
+                                      JOIN sale_items si ON s.id = si.sale_id
+                                      JOIN products p ON si.product_id = p.id
+                                      WHERE YEAR(sale_date) = 2026
+                                      AND MONTH(sale_date) = 03;`);
+
+    const sale_itemsRows=await db.query(`SELECT p.name AS product_name
+                                    FROM sale_items si
+                                    JOIN sales s ON si.sale_id = s.id
+                                    JOIN products p ON si.product_id = p.id
+                                    WHERE DAY(s.sale_date) = 14;
+                                    `)                                  
     //console.log(salesRows)
     //console.log("abc")
     
@@ -71,6 +83,8 @@ app.get('/', async (req, res) => {
     // Transformar les dades a JSON (per les plantilles .hbs)
     // Cal informar de les columnes i els seus tipus
     const salesJson = db.table_to_json(salesRows, { name: 'string', sale_date: 'date'});
+    const sales1Json = db.table_to_json(sales1Rows, { name: 'string', sale_date: 'date'});
+    const sale_itemsJson = db.table_to_json(sale_itemsRows, { product_name: 'string'});
     
 
     // Llegir l'arxiu .json amb dades comunes per a totes les pàgines
@@ -80,6 +94,8 @@ app.get('/', async (req, res) => {
     
     // Construir l'objecte de dades per a la plantilla
     const data = {
+      sale_items:sale_itemsJson,
+      sales1:sales1Json,
       sales: salesJson,
       common: commonData
     };
