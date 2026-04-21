@@ -107,6 +107,42 @@ app.get('/', async (req, res) => {
     res.status(500).send('Error consultant la base de dades');
   }
 });
+app.get('/clientes', async (req, res) => {
+  try {
+    // Obtenir les dades de la base de dades
+    const customersRows = await db.query(`select name
+                                          from customers`);
+    
+
+                                    
+    //console.log(salesRows)
+    //console.log("abc")
+    
+
+    // Transformar les dades a JSON (per les plantilles .hbs)
+    // Cal informar de les columnes i els seus tipus
+    const customersJson = db.table_to_json(customersRows, { name: 'string'});
+    
+    
+
+    // Llegir l'arxiu .json amb dades comunes per a totes les pàgines
+    const commonData = JSON.parse(
+      fs.readFileSync(path.join(__dirname, 'data', 'common.json'), 'utf8')
+    );
+    
+    // Construir l'objecte de dades per a la plantilla
+    const data = {
+      customers:customersJson,
+      common: commonData
+    };
+
+    // Renderitzar la plantilla amb les dades
+    res.render('clients', data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error consultant la base de dades');
+  }
+});
 
 // Start server
 const httpServer = app.listen(port, () => {
