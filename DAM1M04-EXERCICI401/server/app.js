@@ -74,13 +74,13 @@ app.get('/', async (req, res) => {
                                     FROM sale_items si
                                     JOIN sales s ON si.sale_id = s.id
                                     JOIN products p ON si.product_id = p.id
-                                    WHERE DAY(s.sale_date) = 14;
+                                    WHERE DAY(s.sale_date) = 7;
                                     `);
     const sale1_itemsRows=await db.query(`SELECT p.name AS product_name
                                     FROM sale_items si
                                     JOIN sales s ON si.sale_id = s.id
                                     JOIN products p ON si.product_id = p.id
-                                    WHERE MONTH(s.sale_date) = 2;
+                                    WHERE MONTH(s.sale_date) = 3;
                                     `)                                                                   
     //console.log(salesRows)
     //console.log("abc")
@@ -91,7 +91,7 @@ app.get('/', async (req, res) => {
     const salesJson = db.table_to_json(salesRows, { name: 'string', sale_date: 'date'});
     const sales1Json = db.table_to_json(sales1Rows, { name: 'string', sale_date: 'date'});
     const sale_itemsJson = db.table_to_json(sale_itemsRows, { product_name: 'string'});
-    const sale1_itemsJson = db.table_to_json(sale_itemsRows, { product_name: 'string'});
+    const sale1_itemsJson = db.table_to_json(sale1_itemsRows, { product_name: 'string'});
 
     // Llegir l'arxiu .json amb dades comunes per a totes les pàgines
     const commonData = JSON.parse(
