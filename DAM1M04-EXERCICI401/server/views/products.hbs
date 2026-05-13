@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  {{> header}}
+</head>
+<body>
+  <table>
+            <thead>
+                <tr>
+                    <th>name</th>
+                    <th>category</th>
+                    <th>stock</th>
+                    <th>active</th>
+                    <th>editar</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {{#each products}}
+                <tr>
+                    <td>{{name}}</td>
+                    <td>{{category}}</td>
+                    <td>{{stock}}</td>
+                    <td>{{active}}</td>
+                    <td><a href="/productsEdit?id={{id}}">Editar</a></td>
+                    {{/each}}
+                </tr>
+            </tbody>
+        </table>
+        <div class="pagination">
+             <a href="/anterior?numpagina={{currentPage}}">Anterior</a>
+             <a href="/siguiente?numpagina={{currentPage}}">Siguiente</a>
+        </div>
+
+        <a id="toggleSearch">Cerca</a>
+
+<div id="searchPanel" style="display:none;">
+  
+  <form method="GET" action="/productes">
+    <label>Buscar per nom</label>
+    <input type="text" name="cerca" placeholder="Nom del producte">
+    <button type="submit">Buscar</button>
+  </form>
+
+  <form method="GET" action="/productes">
+    <label>Buscar per categoria</label>
+    <input type="text" name="categoria" placeholder="Categoria">
+    <button type="submit">Buscar</button>
+  </form>
+
+</div>
+<script src="scrip.js"></script>
+
+</body>
+</html>

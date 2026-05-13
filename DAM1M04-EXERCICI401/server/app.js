@@ -150,6 +150,262 @@ app.get('/clientes', async (req, res) => {
     res.status(500).send('Error consultant la base de dades');
   }
 });
+app.get('/productes', async (req, res) => {
+  try {
+    const cerca = req.query.cerca || null;
+    const categoria = req.query.categoria || null;
+    const page = parseInt(req.query.pagina) || 1;
+    const limit = 10;
+    const offset = (page - 1) * limit;
+
+    // Construir WHERE dinámico
+    let where = "WHERE 1=1";
+
+    if (cerca) {
+      where += ` AND name LIKE '%${cerca}%'`;
+    }
+
+    if (categoria) {
+      where += ` AND category LIKE '%${categoria}%'`;
+    }
+
+    // Total de productos filtrados
+    const totalRows = await db.query(`
+      SELECT COUNT(*) AS total
+      FROM products
+      ${where}
+    `);
+
+    const totalProducts = totalRows[0].total;
+    const totalPages = Math.ceil(totalProducts / limit);
+
+    // Productos filtrados + paginados
+    const productsRows = await db.query(`
+      SELECT id, name, category, stock, active
+      FROM products
+      ${where}
+      LIMIT ${limit} OFFSET ${offset}
+    `);
+
+    const productsJson = db.table_to_json(productsRows, {
+      id: 'number',
+      name: 'string',
+      category: 'string',
+      stock: 'number',
+      active: 'number'
+    });
+
+    const commonData = JSON.parse(
+      fs.readFileSync(path.join(__dirname, 'data', 'common.json'), 'utf8')
+    );
+
+    res.render('products', {
+      products: productsJson,
+      common: commonData,
+      currentPage: page,
+      totalPages: totalPages,
+      hasPrev: page > 1,
+      hasNext: page < totalPages,
+      cerca: cerca,
+      categoria: categoria
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error consultant la base de dades');
+  }
+});
+
+app.get('/siguiente', async (req, res) => {
+  let page = parseInt(req.query.numpagina) || 1;
+  page++; // siguiente página
+
+  const limit = 10;
+  const offset = (page - 1) * limit;
+
+  const sql = `
+    SELECT id, name, category, stock, active
+    FROM products
+    LIMIT ${limit} OFFSET ${offset}
+  `;
+
+  const productsRows = await db.query(sql);
+
+  const productsJson = db.table_to_json(productsRows, {
+    id: 'number',
+    name: 'string',
+    category: 'string',
+    stock: 'number',
+    active: 'number'
+  });
+
+  const commonData = JSON.parse(
+    fs.readFileSync(path.join(__dirname, 'data', 'common.json'), 'utf8')
+  );
+
+  res.render('products', {
+    products: productsJson,
+    common: commonData,
+    currentPage: page,
+    totalPages: totalPages
+  });
+});
+app.get('/anterior', async (req, res) => {
+  let page = parseInt(req.query.numpagina) || 1;
+
+  if (page > 1) page--; // no bajar de 1
+
+  const limit = 10;
+  const offset = (page - 1) * limit;
+
+  const sql = `
+    SELECT id, name, category, stock, active
+    FROM products
+    LIMIT ${limit} OFFSET ${offset}
+  `;
+
+  const productsRows = await db.query(sql);
+
+  const productsJson = db.table_to_json(productsRows, {
+    id: 'number',
+    name: 'string',
+    category: 'string',
+    stock: 'number',
+    active: 'number'
+  });
+
+  const commonData = JSON.parse(
+    fs.readFileSync(path.join(__dirname, 'data', 'common.json'), 'utf8')
+  );
+
+  res.render('products', {
+    products: productsJson,
+    common: commonData,
+    currentPage: page
+  });
+});
+
+
+
+app.get('/productsEdit', async (req, res) => {
+  try {
+    // Llegit el valor del paràmetre "id" en format enter
+    const cursId = parseInt(req.query.id, 10)
+
+    // Validar que és un número enter positiu (o respondre amb error 400)
+    if (!Number.isInteger(cursId) || cursId <= 0) {
+      return res.status(400).send('Paràmetre id invàlid')
+    }
+
+    // Query only the requested course
+    const productsRows = await db.query(`
+      select id,name,category,stock,active
+      from products
+      where id=${[cursId]}`)
+
+    // Si no s'ha trobat cap curs amb aquest id, respondre amb error 404
+    if (!productsRows || productsRows.length === 0) {
+      return res.status(404).send('Curs no trobat')
+    }
+
+    // Transformar les dades a JSON (per les plantilles .hbs)
+    const productsJson = db.table_to_json(productsRows, {
+      id: 'number',
+      name: 'string',
+      category: 'string',
+      stock:'number',
+      active:'number'
+      
+    })
+
+    // Llegir l'arxiu .json amb dades comunes per a totes les pàgines
+    const commonData = JSON.parse(
+      fs.readFileSync(path.join(__dirname, 'data', 'common.json'), 'utf8')
+    )
+
+    // Construir l'objecte de dades per a la plantilla
+    // com que tenim una llista amb un sol element, agafem directament el primer element (cursosJson[0])
+    const data = {
+      Products: productsJson[0],
+      common: commonData
+    }
+
+    // Render a new template (recommended)
+    res.render('productsEdit', data)
+  } catch (err) {
+    console.error(err)
+    res.status(500).send('Error consultant la base de dades')
+  }
+});
+
+app.post('/update', async (req, res) => {
+  try {
+    const { table,id, name, category, stock} = req.body;
+
+    if (table === "products") {
+      // Usamos comillas dobles para envolver los textos por si tienen espacios
+      const sql = `
+        UPDATE products 
+        SET name = "${name}", 
+            category = "${category}", 
+            stock = "${stock}" 
+        WHERE id = ${id}
+      `;
+
+      await db.query(sql); // Aquí no pasamos array, porque ya van dentro del string
+
+      console.log(`Producto ${id} actualizada`);
+      res.redirect('/productes');
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error actualizando: ' + err.message);
+  }
+});
+
+app.get('/ProductsSearch', async (req, res) => {
+  try {
+    // Llegit el valor del paràmetre "id" en format enter
+
+    // Query only the requested course
+    const productsRows = await db.query(`
+      select id,name,category,stock,active
+      from products`)
+
+    // Si no s'ha trobat cap curs amb aquest id, respondre amb error 404
+    if (!productsRows || productsRows.length === 0) {
+      return res.status(404).send('Curs no trobat')
+    }
+
+    // Transformar les dades a JSON (per les plantilles .hbs)
+    const productsJson = db.table_to_json(productsRows, {
+      id: 'number',
+      name: 'string',
+      category: 'string',
+      stock:'number',
+      active:'number'
+      
+    })
+    // Llegir l'arxiu .json amb dades comunes per a totes les pàgines
+    const commonData = JSON.parse(
+      fs.readFileSync(path.join(__dirname, 'data', 'common.json'), 'utf8')
+    )
+
+    // Construir l'objecte de dades per a la plantilla
+    // com que tenim una llista amb un sol element, agafem directament el primer element (cursosJson[0])
+    const data = {
+      SearchProducts: productsJson[0],
+      common: commonData
+    }
+
+    // Render a new template (recommended)
+    res.render('ProductsSearch', data)
+  } catch (err) {
+    console.error(err)
+    res.status(500).send('Error consultant la base de dades')
+  }
+});
+
 
 // Start server
 const httpServer = app.listen(port, () => {

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  {{> header}}
+</head>
+<body>
+  <h1>Busca un producto especifico</h1>
+  <main class="container">
+  <h1>Actualizar Película</h1>
+
+  <form method="POST" action="/search" class="form-grid">
+    <input type="hidden" name="table" value="products"/>
+    
+    <label for="id">ID del producto</label>
+    <input type="text" id="id" value="{{Products.id}}" disabled>
+    <input type="hidden" name="id" value="{{Products.id}}">
+
+
+    <label for="name">Nombre del producto</label>
+    <input type="text" id="name" name="name" pattern="[A-Za-z0-9\s:\-']{1,100}" required>
+    
+    <button type="submit">Actualizar Movie</button>
+  </form>
+</main> 
+</body>
+</html>

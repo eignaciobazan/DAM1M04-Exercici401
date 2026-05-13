@@ -13,3 +13,7 @@ document.querySelectorAll(".tab").forEach(tab => {
         document.getElementById(tabId).classList.add("active");
     });
 });
+document.getElementById("toggleSearch").addEventListener("click", () => {
+  const panel = document.getElementById("searchPanel");
+  panel.style.display = panel.style.display === "none" ? "block" : "none";
+});

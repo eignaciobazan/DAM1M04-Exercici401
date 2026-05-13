@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  {{> header}}
+</head>
+<body>
+    <h1>Informacion del producto con ID:{{Products.id}}</h1>
+  <table>
+            <thead>
+                <tr>
+                    <th>name</th>
+                    <th>category</th>
+                    <th>stock</th>
+                    <th>active</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>{{Products.name}}</td>
+                    <td>{{Products.category}}</td>
+                    <td>{{Products.stock}}</td>
+                    <td>{{Products.active}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+<main class="container">
+  <h1>Actualizar Película</h1>
+
+  <form method="POST" action="/update" class="form-grid">
+    <input type="hidden" name="table" value="products"/>
+    
+    <label for="id">ID del producto</label>
+    <input type="text" id="id" value="{{Products.id}}" disabled>
+    <input type="hidden" name="id" value="{{Products.id}}">
+
+
+    <label for="name">Nombre del producto</label>
+    <input type="text" id="name" name="name" pattern="[A-Za-z0-9\s:\-']{1,100}" required>
+
+    <label for="category">category</label>
+    <input type="text" id="category" name="category" pattern="[A-Za-z0-9\s:\-']{1,100}" required>
+
+
+    <label for="stock">Stock</label>
+    <input type="number" id="stock" name="stock" required>
+
+    
+    <button type="submit">Actualizar Movie</button>
+  </form>
+</main> 
+</body>
+</html>
