@@ -28,27 +28,33 @@
             </tbody>
         </table>
         <div class="pagination">
-             <a href="/anterior?numpagina={{currentPage}}">Anterior</a>
-             <a href="/siguiente?numpagina={{currentPage}}">Siguiente</a>
+             {{#if hasPrev}}
+                <a href="/anterior?numpagina={{currentPage}}">Anterior</a>
+              {{/if}}
+
+              {{#if hasNext}}
+                <a href="/siguiente?numpagina={{currentPage}}">Siguiente</a>
+              {{/if}}
+
         </div>
 
         <a id="toggleSearch">Cerca</a>
 
 <div id="searchPanel" style="display:none;">
-  
-  <form method="GET" action="/productes">
-    <label>Buscar per nom</label>
-    <input type="text" name="cerca" placeholder="Nom del producte">
-    <button type="submit">Buscar</button>
-  </form>
+<form method="GET" action="/productes">
+  <label>Buscar per nom</label>
+  <input type="text" name="cerca" placeholder="Nom del producte">
+  <input type="hidden" name="pagina" value="1">
+  <button type="submit">Buscar</button>
+</form>
 
-  <form method="GET" action="/productes">
-    <label>Buscar per categoria</label>
-    <input type="text" name="categoria" placeholder="Categoria">
-    <button type="submit">Buscar</button>
-  </form>
+<form method="GET" action="/productes">
+  <label>Buscar per categoria</label>
+  <input type="text" name="categoria" placeholder="Categoria">
+  <input type="hidden" name="pagina" value="1">
+  <button type="submit">Buscar</button>
+</form>
 
-</div>
 <script src="scrip.js"></script>
 
 </body>

@@ -204,8 +204,6 @@ app.get('/productes', async (req, res) => {
       common: commonData,
       currentPage: page,
       totalPages: totalPages,
-      hasPrev: page > 1,
-      hasNext: page < totalPages,
       cerca: cerca,
       categoria: categoria
     });
@@ -218,18 +216,28 @@ app.get('/productes', async (req, res) => {
 
 app.get('/siguiente', async (req, res) => {
   let page = parseInt(req.query.numpagina) || 1;
-  page++; // siguiente página
+  page++; // Ir a la siguiente página
 
   const limit = 10;
+
+  // 1. Contar cuántos productos hay en total
+  const totalRows = await db.query(`SELECT COUNT(*) AS total FROM products`);
+  const totalProducts = totalRows[0].total;
+
+  // 2. Calcular cuántas páginas existen
+  const totalPages = Math.ceil(totalProducts / limit);
+
+  // 3. Evitar que page se pase del máximo
+  if (page > totalPages) page = totalPages;
+
   const offset = (page - 1) * limit;
 
-  const sql = `
+  // 4. Obtener los productos de la página actual
+  const productsRows = await db.query(`
     SELECT id, name, category, stock, active
     FROM products
     LIMIT ${limit} OFFSET ${offset}
-  `;
-
-  const productsRows = await db.query(sql);
+  `);
 
   const productsJson = db.table_to_json(productsRows, {
     id: 'number',
@@ -243,28 +251,38 @@ app.get('/siguiente', async (req, res) => {
     fs.readFileSync(path.join(__dirname, 'data', 'common.json'), 'utf8')
   );
 
+  // 5. Renderizar la plantilla con datos de paginación
   res.render('products', {
     products: productsJson,
     common: commonData,
     currentPage: page,
-    totalPages: totalPages
+    totalPages: totalPages,
+    hasPrev: page > 1,
+    hasNext: page < totalPages
   });
 });
+
 app.get('/anterior', async (req, res) => {
   let page = parseInt(req.query.numpagina) || 1;
 
-  if (page > 1) page--; // no bajar de 1
-
+  // 1. Contar total de productos
+  const totalRows = await db.query(`SELECT COUNT(*) AS total FROM products`);
+  const totalProducts = totalRows[0].total;
   const limit = 10;
+  const totalPages = Math.ceil(totalProducts / limit);
+
+  // 2. Evitar bajar de página 1
+  if (page > 1) page--;
+  if (page < 1) page = 1;
+
   const offset = (page - 1) * limit;
 
-  const sql = `
+  // 3. Obtener productos de la página actual
+  const productsRows = await db.query(`
     SELECT id, name, category, stock, active
     FROM products
     LIMIT ${limit} OFFSET ${offset}
-  `;
-
-  const productsRows = await db.query(sql);
+  `);
 
   const productsJson = db.table_to_json(productsRows, {
     id: 'number',
@@ -278,12 +296,17 @@ app.get('/anterior', async (req, res) => {
     fs.readFileSync(path.join(__dirname, 'data', 'common.json'), 'utf8')
   );
 
+  // 4. Renderizar con paginación correcta
   res.render('products', {
     products: productsJson,
     common: commonData,
-    currentPage: page
+    currentPage: page,
+    totalPages: totalPages,
+    hasPrev: page > 1,
+    hasNext: page < totalPages
   });
 });
+
 
 
 
