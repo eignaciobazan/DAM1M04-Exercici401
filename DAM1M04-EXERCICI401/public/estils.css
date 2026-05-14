@@ -58,6 +58,14 @@
     background: #fff;
     border-bottom: 3px solid dodgerblue;
 }
+.kpi-compact .card ul {
+    display: none; /* Oculta las listas */
+}
+
+.kpi-compact .card {
+    padding: 10px;
+    font-size: 14px;
+}
 
 /* ------------------------------
    CONTENIDO DE LAS PESTAÑAS
@@ -108,34 +116,19 @@ button:hover {
     
 }
 
-/* Modo compacto (si quieres usarlo con JS) */
+
 .compact .card {
     padding: 0.8rem;
     font-size: 1rem;
 }
 
 /* ------------------------------
-   TABLAS DE LISTADOS
------------------------------------*/
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 2rem;
-}
-
-table th, table td {
-    padding: 0.8rem;
-    border: 1px solid #ccc;
-    text-align: left;
-}
-
-table th {
-    background: #eaeaea;
-}
-
-/* ------------------------------
    COLORES DE STOCK (para el toggle)
 -----------------------------------*/
+.colors-off .card li {
+    background-color: transparent !important;
+}
+
 .stock-ok {
     background-color: #c8f7c5; /* verde */
 }
@@ -147,6 +140,12 @@ table th {
 .stock-critical {
     background-color: #f5b7b1; /* rojo */
 }
+.colors-off .stock-ok,
+.colors-off .stock-low,
+.colors-off .stock-critical {
+    background-color: transparent !important;
+}
+
 
 
 /*********************CLIENTES***********************/

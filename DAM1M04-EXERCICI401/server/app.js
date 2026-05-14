@@ -15,9 +15,9 @@ const db = new MySQL();
 if (!isProxmox) {
   db.init({
     host: 'localhost',
-    port: 3307,
-    user: 'super',
-    password: '1234',
+    port: 3306,
+    user: 'root',
+    password: 'tuclave',
     database: 'botiga_marcas'
   });
 } else {
@@ -81,7 +81,26 @@ app.get('/', async (req, res) => {
                                     JOIN sales s ON si.sale_id = s.id
                                     JOIN products p ON si.product_id = p.id
                                     WHERE MONTH(s.sale_date) = 3;
-                                    `)                                                                   
+                                    `);
+    const stockRows=await db.query(`
+      select name,stock
+      from products
+      where stock<=20`);
+    const ventesRows=await db.query(`
+      SELECT s.id, c.name AS client, s.sale_date, s.total
+      FROM sales s
+      JOIN customers c ON s.customer_id = c.id
+      ORDER BY s.sale_date DESC
+      LIMIT 5;
+      `);
+      const ventes1Rows=await db.query(`
+      SELECT p.name, SUM(si.qty) AS total_vendes
+      FROM sale_items si
+      JOIN products p ON si.product_id = p.id
+      GROUP BY p.id, p.name
+      ORDER BY total_vendes DESC
+      LIMIT 5;
+      `)                                                                                                        
     //console.log(salesRows)
     //console.log("abc")
     
@@ -92,6 +111,9 @@ app.get('/', async (req, res) => {
     const sales1Json = db.table_to_json(sales1Rows, { name: 'string', sale_date: 'date'});
     const sale_itemsJson = db.table_to_json(sale_itemsRows, { product_name: 'string'});
     const sale1_itemsJson = db.table_to_json(sale1_itemsRows, { product_name: 'string'});
+    const stockJson = db.table_to_json(stockRows, { stock: 'number',name:'string'});
+    const ventesJson = db.table_to_json(ventesRows, { client: 'string',sale_date:'date',total:'number'});
+    const ventes1Json = db.table_to_json(ventes1Rows, { name: 'string',total_vendes:'number'});
 
     // Llegir l'arxiu .json amb dades comunes per a totes les pàgines
     const commonData = JSON.parse(
@@ -104,6 +126,9 @@ app.get('/', async (req, res) => {
       sales1:sales1Json,
       sales: salesJson,
       sale1_items:sale1_itemsJson,
+      stock:stockJson,
+      ventes:ventesJson,
+      ventes1:ventes1Json,
       common: commonData
     };
 

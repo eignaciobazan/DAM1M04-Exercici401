@@ -17,6 +17,8 @@
                 <h2>KPI</h2>
                 <button id="toggleKPI">Compacte / Complet</button>
 
+
+
                 <div class="kpi-cards">
                     <div class="card">Vendes d’avui:
                         <ul>
@@ -28,26 +30,93 @@
                         </ul>
                     </div>
                     <div class="card">Vendes del mes:
-                        
+                         <ul>
+                            {{#each sales1}}
+                                <li>nombre:{{name}}-
+                                    fecha:{{sale_date}}</li>
+                            {{/each}}
+                            
+                        </ul>
                     </div>
-                    <div class="card">Comandes avui:</div>
-                    <div class="card">Comandes mes:</div>
-                    <div class="card">Stock baix:</div>
+                    <div class="card">Comandes avui:
+                         <ul>
+                            {{#each sale_items}}
+                                <li>nombre:{{product_name}}</li>
+                            {{/each}}
+                            
+                        </ul>
+                    </div>
+                    <div class="card">Comandes mes:
+                          <ul>
+                            {{#each sale1_items}}
+                                <li>nombre:{{product_name}}</li>
+                            {{/each}}
+                            
+                        </ul>
+                    </div>
+                    <div class="card">Stock baix:
+                        {{#each stock}}
+                        <ul>
+                            <li>Nombre:{{name}} stock:{{stock}} </li>
+                        </ul>
+                        {{/each}}
+                    </div>
                 </div>
             </div>
 
             <div id="llistes" class="tab-content">
-                <h2>Llistats</h2>
-                <button id="toggleColors">Colors ON/OFF</button>
+            <h2>Llistats</h2>
+            <button id="toggleColors">Colors ON/OFF</button>
 
-                <h3>Últimes 5 vendes</h3>
-                <table>...</table>
+            <h3>Últimes 5 vendes</h3>
+            {{#each ventes}}
+            <ul>
+                <li class="stock-ok">cliente:{{client}} total:{{total}} fecha:{{sale_date}}</li>
+            </ul>
+            {{/each}}
 
-                <h3>Top 5 productes més venuts</h3>
-                <table>...</table>
+            <h3>Top 5 productes més venuts</h3>
+            {{#each ventes1}}
+            <ul>
+                <li class="stock-low">Producto:{{name}} total:{{total_vendes}}</li>
+            </ul>
+            {{/each}}
             </div>
+
 
         </section>
     <script src="scrip.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            console.log("JS dentro del HBS cargado");
+
+            const btn = document.getElementById("toggleKPI");
+            const kpiSection = document.getElementById("kpi");
+
+            if (!btn) {
+                console.error("No se encontró el botón toggleKPI");
+                return;
+            }
+
+            btn.addEventListener("click", () => {
+                kpiSection.classList.toggle("kpi-compact");
+                console.log("Modo compacto activado/desactivado");
+            });
+        });
+    </script>
+    <script>
+        console.log('Cargado');
+        document.addEventListener("DOMContentLoaded", () => {
+            const btn = document.getElementById("toggleColors");
+            const llistes = document.getElementById("llistes");
+
+            btn.addEventListener("click", () => {
+                llistes.classList.toggle("colors-off");
+            });
+        });
+    </script>
+
+
+
 </body>
 </html>

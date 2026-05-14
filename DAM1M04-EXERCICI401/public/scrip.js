@@ -17,3 +17,6 @@ document.getElementById("toggleSearch").addEventListener("click", () => {
   const panel = document.getElementById("searchPanel");
   panel.style.display = panel.style.display === "none" ? "block" : "none";
 });
+
+
+
