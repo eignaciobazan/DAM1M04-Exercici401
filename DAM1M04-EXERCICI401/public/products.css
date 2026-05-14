@@ -1,3 +1,6 @@
+.oculto{
+  display: none;
+}
 table {
     width: 50%;
     border-collapse: collapse;
@@ -46,3 +49,24 @@ tr:hover {
   font-size: 1rem;
   cursor: pointer;
 }
+
+.buscar {
+  cursor: pointer;
+  position: relative;
+  padding-right: 25px;
+}
+
+/* Icono por defecto: lupa */
+.buscar::after {
+  content: "🔍";
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+/* Cuando el checkbox está marcado → cambia a X */
+#toggleSearch:checked + .buscar::after {
+  content: "❌";
+  color: red;
+}
+
