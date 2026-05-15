@@ -5,7 +5,6 @@
   {{> header}}
 </head>
 <body>
-  <h1>Probando escritura</h1>
   <section class="dashboard">
 
             <div class="tabs">
@@ -82,7 +81,7 @@
     <script src="scrip.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            console.log("JS dentro del HBS cargado");
+            console.log("cargado");
 
             const btn = document.getElementById("toggleKPI");
             const kpiSection = document.getElementById("kpi");
@@ -97,7 +96,7 @@
                 console.log("Modo compacto activado/desactivado");
             });
         });
-    </script>
+    </script> 
     <script>
         console.log('Cargado');
         document.addEventListener("DOMContentLoaded", () => {
