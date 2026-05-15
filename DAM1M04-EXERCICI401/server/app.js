@@ -411,50 +411,6 @@ app.post('/update', async (req, res) => {
   }
 });
 
-app.get('/ProductsSearch', async (req, res) => {
-  try {
-    // Llegit el valor del paràmetre "id" en format enter
-
-    // Query only the requested course
-    const productsRows = await db.query(`
-      select id,name,category,stock,active
-      from products`)
-
-    // Si no s'ha trobat cap curs amb aquest id, respondre amb error 404
-    if (!productsRows || productsRows.length === 0) {
-      return res.status(404).send('Curs no trobat')
-    }
-
-    // Transformar les dades a JSON (per les plantilles .hbs)
-    const productsJson = db.table_to_json(productsRows, {
-      id: 'number',
-      name: 'string',
-      category: 'string',
-      stock:'number',
-      active:'number'
-      
-    })
-    // Llegir l'arxiu .json amb dades comunes per a totes les pàgines
-    const commonData = JSON.parse(
-      fs.readFileSync(path.join(__dirname, 'data', 'common.json'), 'utf8')
-    )
-
-    // Construir l'objecte de dades per a la plantilla
-    // com que tenim una llista amb un sol element, agafem directament el primer element (cursosJson[0])
-    const data = {
-      SearchProducts: productsJson[0],
-      common: commonData
-    }
-
-    // Render a new template (recommended)
-    res.render('ProductsSearch', data)
-  } catch (err) {
-    console.error(err)
-    res.status(500).send('Error consultant la base de dades')
-  }
-});
-
-
 // Start server
 const httpServer = app.listen(port, () => {
   console.log(`http://localhost:${port}`);
