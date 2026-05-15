@@ -15,15 +15,15 @@ const db = new MySQL();
 if (!isProxmox) {
   db.init({
     host: 'localhost',
-    port: 3306,
-    user: 'root',
-    password: 'tuclave',
+    port: 3307,
+    user: 'super',
+    password: '1234',
     database: 'botiga_marcas'
   });
 } else {
   db.init({
     host: '127.0.0.1',
-    port: 3307,
+    port: 3306,
     user: 'super',
     password: '1234',
     database: 'botiga_marcas'
@@ -457,32 +457,25 @@ app.get('/productsEdit', async (req, res) => {
     res.status(500).send('Error consultant la base de dades')
   }
 });
-pp.post('/create', async (req, res) => {
+app.post('/create', async (req, res) => {
   try {
     const table = req.body.table;
 
     if (table === "products") {
 
-      const id = req.body.id;
       const name = req.body.name;
       const category = req.body.category;
       const price = req.body.price;
       const stock = req.body.stock;
 
-      // Validación básica
-      if (!id || !name || !category || !price || !stock) {
+      if (!name || !category || !price || !stock) {
         return res.status(400).send('Falten dades');
       }
 
-      await db.query(
-        `
-        INSERT INTO products (id, name, category, price, stock)
-        VALUES (?, ?, ?, ?, ?)
-        `,
-        [id, name, category, price, stock]
-      );
+      // INSERT INTO products (name, category, price, stock, active, created_at) VALUES ('abc', 'Calzado', 2.0, 1, 1, '2026-03-14 17:49:21')
+      await db.query(`INSERT INTO products (name, category, price, stock, active, created_at) VALUES ("${name}", "${category}", ${price}, ${stock}, 1, CURRENT_DATE())`);
 
-      res.redirect('/products');
+      res.redirect('/productes');
     }
 
   } catch (err) {
@@ -490,6 +483,9 @@ pp.post('/create', async (req, res) => {
     res.status(500).send('Error afegint el producte');
   }
 });
+
+
+
 
 
 
