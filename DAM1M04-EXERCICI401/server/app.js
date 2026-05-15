@@ -457,6 +457,40 @@ app.get('/productsEdit', async (req, res) => {
     res.status(500).send('Error consultant la base de dades')
   }
 });
+pp.post('/create', async (req, res) => {
+  try {
+    const table = req.body.table;
+
+    if (table === "products") {
+
+      const id = req.body.id;
+      const name = req.body.name;
+      const category = req.body.category;
+      const price = req.body.price;
+      const stock = req.body.stock;
+
+      // Validación básica
+      if (!id || !name || !category || !price || !stock) {
+        return res.status(400).send('Falten dades');
+      }
+
+      await db.query(
+        `
+        INSERT INTO products (id, name, category, price, stock)
+        VALUES (?, ?, ?, ?, ?)
+        `,
+        [id, name, category, price, stock]
+      );
+
+      res.redirect('/products');
+    }
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error afegint el producte');
+  }
+});
+
 
 
 
