@@ -27,9 +27,10 @@
                 </tr>
             </tbody>
         </table>
-        <div class="pagination">
-                <a href="/anterior?numpagina={{currentPage}}">Anterior</a>
-                <a href="/siguiente?numpagina={{currentPage}}">Siguiente</a>
+       <div class="pagination">
+          <a href="/productes?pagina={{math currentPage '-' 1}}&cerca={{cerca}}">Anterior</a>
+          <span>Página {{currentPage}} de {{totalPages}}</span>
+          <a href="/productes?pagina={{math currentPage '+' 1}}&cerca={{cerca}}">Siguiente</a>
         </div>
 
         <input type="checkbox" type="hidden" id="toggleSearch" class="toggle-search oculto">
